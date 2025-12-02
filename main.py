@@ -1,26 +1,26 @@
 from fastapi import FastAPI 
 from pydantic import BaseModel 
-from typing import Dict 
+from typing import Dict, Union 
 
 app = FastAPI() 
 
 def escape_string(string: str) -> str:
     return string.replace('"', '\\"')
 
-def serialize_string(data: Dict[str, str]) -> str:
+def serialize_string(data: Dict[str, Union[str, int, float]]) -> str:
     compress_dict = []
 
     # go over each tuple and append to new dict
     for key, value in data.items():
-        key_str = f"\"{escape_string(key)}\""
-        val_str = f"\"{escape_string(value)}\""
+        key_str = f"\"{escape_string(str(key))}\""
+        val_str = f"\"{escape_string(str(value))}\""
         compress_dict.append(f"{key_str}:{val_str}")
     
     # return in dict form (as string) 
     return "{" + ",".join(compress_dict) + "}"
 
 class SerializeRequest(BaseModel):
-    data: Dict[str, str] # use Dict to enforce string input and return 
+    data: Dict[str, Union[str, int, float]] # use Dict to enforce string input and certain values 
 
 @app.post("/serialize")
 def serialize(req: SerializeRequest):
