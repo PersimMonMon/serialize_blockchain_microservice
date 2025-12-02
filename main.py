@@ -26,3 +26,7 @@ class SerializeRequest(BaseModel):
 def serialize(req: SerializeRequest):
     serialize = serialize_string(req.data)
     return {"serialized": serialize}  # don't let FastAPI JSON encode it 
+
+if __name__ == "__main__":
+    import uvicorn 
+    uvicorn.run("main:app", host="127.0.0.1", port=7000, reload=True)
