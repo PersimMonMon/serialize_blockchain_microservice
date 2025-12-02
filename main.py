@@ -25,4 +25,4 @@ class SerializeRequest(BaseModel):
 @app.post("/serialize")
 def serialize(req: SerializeRequest):
     serialize = serialize_string(req.data)
-    return serialize
+    return {"serialized": serialize}  # don't let FastAPI JSON encode it 
